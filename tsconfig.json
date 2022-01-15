@@ -2,11 +2,7 @@
   "extends": "./tsconfig.settings.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "rootDir": ".",
-    "paths": {
-      "@ridehailing/app": ["app"],
-      "@ridehailing/api": ["api"]
-    }
+    "rootDir": "."
   },
   "references": [
     {

@@ -1,29 +1,29 @@
 {
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/api/src",
+  "sourceRoot": "apps/api-gateway/src",
   "monorepo": true,
-  "root": "apps/api",
+  "root": "apps/api-gateway",
   "compilerOptions": {
     "webpack": true,
-    "tsConfigPath": "apps/api/tsconfig.app.json"
+    "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
   },
   "projects": {
-    "api": {
+    "api-gateway": {
       "type": "application",
-      "root": "apps/api",
+      "root": "apps/api-gateway",
       "entryFile": "main",
-      "sourceRoot": "apps/api/src",
+      "sourceRoot": "apps/api-gateway/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/api/tsconfig.app.json"
+        "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
       }
     },
-    "splyt-service": {
+    "splyt-taxis": {
       "type": "application",
-      "root": "apps/splyt-service",
+      "root": "apps/splyt-taxis",
       "entryFile": "main",
-      "sourceRoot": "apps/splyt-service/src",
+      "sourceRoot": "apps/splyt-taxis/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/splyt-service/tsconfig.app.json"
+        "tsConfigPath": "apps/splyt-taxis/tsconfig.app.json"
       }
     }
   }

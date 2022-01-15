@@ -15,7 +15,7 @@
     "tsc": "./node_modules/.bin/tsc",
     "tsc:build": "yarn tsc -b",
     "tsc:watch": "yarn tsc:build -w",
-    "tsc:clean-build": "tsc:build --clean && tsc:build",
+    "tsc:clean-build": "yarn tsc:build --clean && yarn tsc:build",
     "postinstall": "husky install"
   },
   "lint-staged": {

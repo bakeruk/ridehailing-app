@@ -271,8 +271,8 @@ module.exports = {
           "external",
           "internal",
           [
-            "index",
             "parent",
+            "index",
             "sibling"
           ],
           "object",
@@ -280,11 +280,11 @@ module.exports = {
         ],
         "pathGroups": [
           {
-            pattern: "src/**",
-            group: "internal"
+            pattern: "@nestjs/**",
+            group: "external"
           },
           {
-            pattern: "storybook/**",
+            pattern: "src/**",
             group: "internal"
           },
           {
