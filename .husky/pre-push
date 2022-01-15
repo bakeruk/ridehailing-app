@@ -1,0 +1,5 @@
+#!/bin/sh
+. "$(dirname $0)/_/husky.sh"
+
+# Verifiy that all files linted and type checked
+yarn lint && yarn tsc:build

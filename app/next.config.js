@@ -2,6 +2,6 @@
 const nextConfig = {
   reactStrictMode: true,
   swcFileReading: false
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
