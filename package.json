@@ -2,12 +2,12 @@
   "name": "ridehailing-app",
   "description": "Ridehailing UI",
   "version": "0.1.0",
-  "private": true,
   "packageManager": "yarn@3.1.1",
   "main": "src",
   "author": {
     "name": "Luke Baker",
     "email": "luke.baker@live.com"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "workspaces": [ "api" ]
 }
