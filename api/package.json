@@ -2,8 +2,6 @@
   "name": "@ridehailing/api",
   "description": "Ridehailing Nestjs API",
   "version": "0.1.0",
-  "packageManager": "yarn@3.1.1",
-  "main": "src",
   "author": {
     "name": "Luke Baker",
     "email": "luke.baker@live.com"

@@ -1093,7 +1093,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ridehailing/api@workspace:api":
+"@ridehailing/api@workspace:^, @ridehailing/api@workspace:api":
   version: 0.0.0-use.local
   resolution: "@ridehailing/api@workspace:api"
   dependencies:
@@ -1124,6 +1124,24 @@ __metadata:
     ts-node: ^10.0.0
     tsconfig-paths: ^3.10.1
     typescript: ^4.3.5
+  languageName: unknown
+  linkType: soft
+
+"@ridehailing/app@workspace:app":
+  version: 0.0.0-use.local
+  resolution: "@ridehailing/app@workspace:app"
+  dependencies:
+    "@ridehailing/api": "workspace:^"
+    "@types/eslint": ^8
+    "@types/node": 17.0.8
+    "@types/react": 17.0.38
+    "@types/react-dom": ^17
+    eslint: 8.6.0
+    eslint-config-next: 12.0.8
+    next: 12.0.8
+    react: 17.0.2
+    react-dom: 17.0.2
+    typescript: 4.5.4
   languageName: unknown
   linkType: soft
 
@@ -1928,7 +1946,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv@npm:8.8.2, ajv@npm:^8.0.0":
+"ajv@npm:8.8.2":
   version: 8.8.2
   resolution: "ajv@npm:8.8.2"
   dependencies:
@@ -1949,6 +1967,18 @@ __metadata:
     json-schema-traverse: ^0.4.1
     uri-js: ^4.2.2
   checksum: 874972efe5c4202ab0a68379481fbd3d1b5d0a7bd6d3cc21d40d3536ebff3352a2a1fabb632d4fd2cc7fe4cbdcd5ed6782084c9bbf7f32a1536d18f9da5007d4
+  languageName: node
+  linkType: hard
+
+"ajv@npm:^8.0.0":
+  version: 8.9.0
+  resolution: "ajv@npm:8.9.0"
+  dependencies:
+    fast-deep-equal: ^3.1.1
+    json-schema-traverse: ^1.0.0
+    require-from-string: ^2.0.2
+    uri-js: ^4.2.2
+  checksum: 756c048bfa917b43bb84c8a0a53e6a489123203bc4bdec8cbeb8ec2d715674f5e61d49560a1a6ec83268af4f33bed324f5cb6d9c76d96849fd58ed7089b8e7f3
   languageName: node
   linkType: hard
 
@@ -2009,23 +2039,6 @@ __metadata:
   checksum: 985163db2292fac9e5a1e072bf99f1b5baccf196e4de25a0b0b81865ebddeb3b3eb4480734ef0a2ac8c002845396b91aa89121f5b84f93981a4658164a9ec6e9
   languageName: node
   linkType: hard
-
-"app@workspace:app":
-  version: 0.0.0-use.local
-  resolution: "app@workspace:app"
-  dependencies:
-    "@types/eslint": ^8
-    "@types/node": 17.0.8
-    "@types/react": 17.0.38
-    "@types/react-dom": ^17
-    eslint: 8.6.0
-    eslint-config-next: 12.0.8
-    next: 12.0.8
-    react: 17.0.2
-    react-dom: 17.0.2
-    typescript: 4.5.4
-  languageName: unknown
-  linkType: soft
 
 "append-field@npm:^1.0.0":
   version: 1.0.0
@@ -2841,9 +2854,9 @@ __metadata:
   linkType: hard
 
 "core-js-pure@npm:^3.20.2":
-  version: 3.20.2
-  resolution: "core-js-pure@npm:3.20.2"
-  checksum: d6b3f6782e3f2fc27eb2335917d5c5d0e7621e424c25da67429e9b48b7708b76fdc4a178b245421eeb8342c0ea9b0ca636ece002db3d0e68246a9d395d461ca7
+  version: 3.20.3
+  resolution: "core-js-pure@npm:3.20.3"
+  checksum: a8ec44390849bcf0502f20e6349fa087944bb88ac83d796d7fd5ace837d242308aae54b247a6a56bec463e5ab9be08dfad48d389673c34e8e31cc0a661a17a95
   languageName: node
   linkType: hard
 
@@ -7030,6 +7043,8 @@ __metadata:
 "ridehailing-app@workspace:.":
   version: 0.0.0-use.local
   resolution: "ridehailing-app@workspace:."
+  dependencies:
+    typescript: ^4.5.4
   languageName: unknown
   linkType: soft
 
@@ -8039,7 +8054,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:4.5.4, typescript@npm:^4.3.5":
+"typescript@npm:4.5.4, typescript@npm:^4.3.5, typescript@npm:^4.5.4":
   version: 4.5.4
   resolution: "typescript@npm:4.5.4"
   bin:
@@ -8049,7 +8064,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@4.5.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.3.5#~builtin<compat/typescript>":
+"typescript@patch:typescript@4.5.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.3.5#~builtin<compat/typescript>, typescript@patch:typescript@^4.5.4#~builtin<compat/typescript>":
   version: 4.5.4
   resolution: "typescript@patch:typescript@npm%3A4.5.4#~builtin<compat/typescript>::version=4.5.4&hash=493e53"
   bin:
@@ -8259,7 +8274,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack@npm:5.66.0":
+"webpack@npm:*, webpack@npm:5.66.0":
   version: 5.66.0
   resolution: "webpack@npm:5.66.0"
   dependencies:

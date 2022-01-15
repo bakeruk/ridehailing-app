@@ -2,7 +2,6 @@
   "name": "@ridehailing/app",
   "description": "Ridehailing Nextjs app",
   "version": "0.1.0",
-  "packageManager": "yarn@3.1.1",
   "main": "src",
   "author": {
     "name": "Luke Baker",
@@ -16,6 +15,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ridehailing/api": "workspace:^",
     "next": "12.0.8",
     "react": "17.0.2",
     "react-dom": "17.0.2"

@@ -9,8 +9,17 @@
     "email": "luke.baker@live.com"
   },
   "license": "MIT",
+  "scripts": {
+    "tsc": "./node_modules/.bin/tsc",
+    "tsc:build": "yarn tsc -b",
+    "tsc:watch": "yarn tsc:build -w",
+    "tsc:clean-build": "tsc:build --clean && tsc:build"
+  },
   "workspaces": [
     "api",
     "app"
-  ]
+  ],
+  "devDependencies": {
+    "typescript": "^4.5.4"
+  }
 }
