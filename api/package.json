@@ -1,6 +1,6 @@
 {
   "name": "@ridehailing/api",
-  "description": "Ridehailing API",
+  "description": "Ridehailing Nestjs API",
   "version": "0.1.0",
   "packageManager": "yarn@3.1.1",
   "main": "src",
