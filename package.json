@@ -9,5 +9,7 @@
     "email": "luke.baker@live.com"
   },
   "license": "MIT",
-  "workspaces": [ "api" ]
+  "workspaces": [
+    "api"
+  ]
 }
