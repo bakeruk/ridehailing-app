@@ -284,6 +284,14 @@ module.exports = {
             group: "external"
           },
           {
+            pattern: "@libs/**",
+            group: "internal"
+          },
+          {
+            pattern: "@packages/**",
+            group: "internal"
+          },
+          {
             pattern: "src/**",
             group: "internal"
           },

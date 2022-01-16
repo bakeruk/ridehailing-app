@@ -2,9 +2,21 @@
   "extends": "../tsconfig.settings.json",
   "compilerOptions": {
     "baseUrl": ".",
+    "rootDir": ".",
     "outDir": "dist",
     "module": "commonjs",
-    "target": "es2017"
+    "target": "es2017",
+    "paths": {
+      "@packages/splyt-taxis": [
+        "packages/splyt-taxis/src"
+      ],
+      "@libs/axios-async": [
+        "libs/axios-async/src"
+      ],
+      "@libs/splyt-api": [
+        "libs/splyt-api/src"
+      ]
+    }
   },
   "exclude": [
     "node_modules",

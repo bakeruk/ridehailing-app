@@ -1,29 +1,47 @@
 {
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/api-gateway/src",
+  "sourceRoot": "packages/api-gateway/src",
   "monorepo": true,
-  "root": "apps/api-gateway",
+  "root": "packages/api-gateway",
   "compilerOptions": {
     "webpack": true,
-    "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
+    "tsConfigPath": "packages/api-gateway/tsconfig.app.json"
   },
   "projects": {
     "api-gateway": {
       "type": "application",
-      "root": "apps/api-gateway",
+      "root": "packages/api-gateway",
       "entryFile": "main",
-      "sourceRoot": "apps/api-gateway/src",
+      "sourceRoot": "packages/api-gateway/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
+        "tsConfigPath": "packages/api-gateway/tsconfig.app.json"
       }
     },
     "splyt-taxis": {
       "type": "application",
-      "root": "apps/splyt-taxis",
+      "root": "packages/splyt-taxis",
       "entryFile": "main",
-      "sourceRoot": "apps/splyt-taxis/src",
+      "sourceRoot": "packages/splyt-taxis/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/splyt-taxis/tsconfig.app.json"
+        "tsConfigPath": "packages/splyt-taxis/tsconfig.app.json"
+      }
+    },
+    "axios-async": {
+      "type": "library",
+      "root": "libs/axios-async",
+      "entryFile": "index",
+      "sourceRoot": "libs/axios-async/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/axios-async/tsconfig.lib.json"
+      }
+    },
+    "splyt-api": {
+      "type": "library",
+      "root": "libs/splyt-api",
+      "entryFile": "index",
+      "sourceRoot": "libs/splyt-api/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/splyt-api/tsconfig.lib.json"
       }
     }
   }
