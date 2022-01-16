@@ -12,7 +12,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "cy:run": "yarn cypress run",
+    "cy:open": "yarn cypress open"
   },
   "dependencies": {
     "@ridehailing/api": "workspace:^",
@@ -31,6 +32,7 @@
     "@types/react-dom": "^17",
     "@types/styled-components": "^5",
     "babel-plugin-styled-components": "^2.0.2",
+    "cypress": "^9.2.1",
     "typescript": "4.5.4"
   }
 }
