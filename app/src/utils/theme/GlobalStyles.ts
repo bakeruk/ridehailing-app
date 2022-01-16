@@ -32,6 +32,12 @@ export const GlobalStyles = createGlobalStyle`
         display: inline-block;
       }
 
+      .off-screen {
+        position: absolute;
+        left: -99999rem;
+        text-indent: -99999rem;
+      }
+
       #__next {
         display: block;
         width: 100%;

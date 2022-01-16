@@ -233,6 +233,7 @@ module.exports = {
     "no-console": [ "warn", { allow: [ "warn", "error" ] } ],
     "no-alert": [ "warn" ],
     "no-control-regex": "off",
+    "no-redeclare": [ "error", { builtinGlobals: false } ],
     "import/no-unresolved": [ "off" ],
     "import/namespace": [ "off" ],
     "import/no-named-as-default": [ "off" ],
