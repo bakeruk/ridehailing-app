@@ -5,5 +5,10 @@
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
+  },
+
+  "moduleNameMapper": {
+    "^@libs/splyt-api(|/.*)$": "../../../libs/splyt-api/src/$1",
+    "^@packages/splyt-taxis(|/.*)$": "../../../packages/splyt-taxis/src/$1"
   }
 }

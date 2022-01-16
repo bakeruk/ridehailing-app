@@ -20,7 +20,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./packages/api/test/jest-e2e.json"
+    "test:e2e": "jest --config ./packages/api-gateway/test/jest-e2e.json"
   },
   "dependencies": {
     "@nestjs/axios": "^0.0.4",
@@ -75,8 +75,8 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^@api/axios-async(|/.*)$": "<rootDir>/libs/axios-async/src/$1",
-      "^@libs/splyt-api(|/.*)$": "<rootDir>/libs/splyt-api/src/$1"
+      "^@libs/splyt-api(|/.*)$": "<rootDir>/libs/splyt-api/src/$1",
+      "^@packages/splyt-taxis(|/.*)$": "<rootDir>/packages/splyt-taxis/src/$1"
     }
   }
 }

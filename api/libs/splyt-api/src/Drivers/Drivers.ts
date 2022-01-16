@@ -1,5 +1,5 @@
 import { HttpRequest } from "../HttpRequest";
-import { DriversNearbyResult } from "./types/drivers";
+import { DriversNearbyResult } from "./types";
 
 /**
  * Drives class
