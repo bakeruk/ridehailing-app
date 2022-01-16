@@ -1,9 +1,17 @@
-// eslint-disable-next-line import/extensions
-import "styles/globals.css";
+import { ThemeProvider } from "styled-components";
+
 import type { AppProps } from "next/app";
+import { GlobalStyles, theme } from "src/utils/theme";
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
-}
+/**
+ * App initialiser
+ */
+const App = ({ Component, pageProps }: AppProps): JSX.Element => (
+  <ThemeProvider theme={theme}>
+    <GlobalStyles />
 
-export default MyApp;
+    <Component {...pageProps} />
+  </ThemeProvider>
+);
+
+export default App;
