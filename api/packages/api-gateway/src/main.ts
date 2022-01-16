@@ -1,6 +1,6 @@
 import compression from "compression";
 import { NestFactory } from "@nestjs/core";
-import { Logger, ValidationPipe } from "@nestjs/common";
+import { Logger } from "@nestjs/common";
 
 import { ApiGatewayModule } from "./api-gateway.module";
 
@@ -22,13 +22,6 @@ const bootstrap = async () => {
 
   const logger = new Logger("server");
 
-  // Enabled global validation on requests with argument decorators
-  apiGateway.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      transform: true
-    }),
-  );
   apiGateway.enableCors();
   apiGateway.use(compression());
   await apiGateway.listen(port);

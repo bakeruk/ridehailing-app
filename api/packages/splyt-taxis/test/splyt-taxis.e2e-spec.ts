@@ -18,6 +18,6 @@ describe("SplytTaxisController (e2e)", () => {
     return request(splytTaxis.getHttpServer())
       .get("/")
       .expect(200)
-      .expect("Hello World!");
+      .expect("OK");
   });
 });

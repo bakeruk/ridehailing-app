@@ -38,11 +38,5 @@ describe("DriversController", () => {
       spyOn.mockImplementation(async () => findAlldriversMaxEtaFixture.expect);
       expect(driversController.findAll(findAlldriversMaxEtaFixture.params)).resolves.toEqual(findAlldriversMaxEtaFixture.expect);
     });
-
-    // it("should throw and error due to invalid latitude parameter", () => {
-    //   spyOn.mockImplementation(async () => findAlldriversInvalidGeolocationFixture.expect);
-    //   // @ts-ignore - Force error
-    //   expect(driversController.findAll(findAlldriversInvalidGeolocationFixture.params)).resolves.toThrowError();
-    // });
   });
 });
