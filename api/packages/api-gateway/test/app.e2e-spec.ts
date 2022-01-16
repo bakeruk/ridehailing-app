@@ -18,6 +18,6 @@ describe("ApiGatewayController (e2e)", () => {
     return request(apiGateway.getHttpServer())
       .get("/")
       .expect(200)
-      .expect("Hello World!");
+      .expect("OK");
   });
 });

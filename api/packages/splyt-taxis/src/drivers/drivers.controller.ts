@@ -27,8 +27,6 @@ export class DriversController {
    */
    @Get()
   async findAll(@Query() query: FindAllDriversDto): Promise<DriversNearbyEtas> {
-    console.log("findAll query", query);
-
     return await this.driversService.findAll(query);
   }
 }

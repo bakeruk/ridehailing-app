@@ -2,9 +2,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 
 import { DriversController } from "./drivers.controller";
-import {
-  findAlldriversStandardFixture, findAlldriversMaxEtaFixture, findAlldriversInvalidGeolocationFixture
-} from "./drivers.controller.fixture";
+import { findAlldriversStandardFixture, findAlldriversMaxEtaFixture } from "./drivers.controller.fixture";
 import { DriversService } from "./drivers.service";
 import { FindAllDriversDto } from "./dto";
 import { DriversNearbyEtas } from "./interfaces";
@@ -41,10 +39,10 @@ describe("DriversController", () => {
       expect(driversController.findAll(findAlldriversMaxEtaFixture.params)).resolves.toEqual(findAlldriversMaxEtaFixture.expect);
     });
 
-    it("should throw and error due to invalid latitude parameter", () => {
-      spyOn.mockImplementation(async () => findAlldriversInvalidGeolocationFixture.expect);
-      // @ts-ignore - Force error
-      expect(driversController.findAll(findAlldriversInvalidGeolocationFixture.params)).resolves.toThrowError();
-    });
+    // it("should throw and error due to invalid latitude parameter", () => {
+    //   spyOn.mockImplementation(async () => findAlldriversInvalidGeolocationFixture.expect);
+    //   // @ts-ignore - Force error
+    //   expect(driversController.findAll(findAlldriversInvalidGeolocationFixture.params)).resolves.toThrowError();
+    // });
   });
 });
