@@ -2,21 +2,26 @@ import {
   useEffect, useRef, useState
 } from "react";
 
-import { InteractiveMapProps, MapRef } from "react-map-gl";
+import {
+  InteractiveMapProps, MapRef, Marker
+} from "react-map-gl";
 import {
   defaultViewport,
   Map,
-  MapProps
+  MapProps,
+  BuildingMapMarker
 } from "src/components/common/map";
+import type { SplytOfficeAttributes } from "src/constants";
 
-interface HomeTaxisMapProps extends MapProps {
-  viewportConfig?: InteractiveMapProps;
+interface HomeTaxisMapProps {
+  selectedOffice?: SplytOfficeAttributes;
+  viewportConfig?: MapProps;
 }
 
 /**
  * Home taxis map component
  */
-export const HomeTaxisMap: React.FC<HomeTaxisMapProps> = ({ viewportConfig, ...rest }) => {
+export const HomeTaxisMap: React.FC<HomeTaxisMapProps> = ({ selectedOffice, viewportConfig }) => {
   const mapRef = useRef<MapRef>(null);
   const [ viewport, setViewport ] = useState<InteractiveMapProps>(defaultViewport);
 
@@ -36,7 +41,15 @@ export const HomeTaxisMap: React.FC<HomeTaxisMapProps> = ({ viewportConfig, ...r
       ref={mapRef}
       onViewportChange={setViewport}
       {...viewport}
-      {...rest}
-    />
+    >
+      {selectedOffice && (
+        <Marker
+          key={selectedOffice.name}
+          {...selectedOffice.coords}
+        >
+          <BuildingMapMarker />
+        </Marker>
+      )}
+    </Map>
   );
 };
