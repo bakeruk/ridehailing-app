@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import {
+  useCallback, useEffect, useState
+} from "react";
 import styled from "styled-components";
 
 import type { NextPage } from "next";
@@ -7,8 +9,11 @@ import { Typography } from "src/components/common/text";
 import { HomeTaxisMap } from "src/components/home/taxis-map";
 import { useGeolocation } from "src/hooks";
 import { findNearestSplytOffice } from "src/utils/helpers";
-import type { SplytOfficeAttributes } from "src/constants";
+import { SPLYT_OFFICES, SplytOfficeAttributes } from "src/constants";
 import type { MapProps } from "src/components/common/map";
+import { Select } from "src/components/common/form";
+
+import { Card } from "../components/common/card";
 
 /**
  * Hail a ride page
@@ -19,6 +24,23 @@ const HailARidePage: NextPage = () => {
   const [ nearestOffice, setNearestOffice ] = useState<SplytOfficeAttributes>();
   const [ selectedOffice, setSelectedOffice ] = useState<SplytOfficeAttributes>();
   const [ mapViewportConfig, setMapViewportConfig ] = useState<MapProps>();
+
+  const handleOfficeSelection = useCallback(event => {
+    const officeName = event.currentTarget.value;
+    const selectedOffice = SPLYT_OFFICES.find(office => office.name === officeName);
+
+    // If an office was matched within SPLYT_OFFICES, update state
+    if (selectedOffice) {
+      // Update the selectedOffice state
+      setSelectedOffice(selectedOffice);
+
+      // Update the mapViewport config state
+      setMapViewportConfig({
+        ...selectedOffice.coords,
+        zoom: 15
+      });
+    }
+  }, []);
 
   // On usersGeolocation change
   useEffect(() => {
@@ -60,6 +82,24 @@ const HailARidePage: NextPage = () => {
           viewportConfig={mapViewportConfig}
           selectedOffice={selectedOffice}
         />
+
+        {selectedOffice && (
+          <Card className="overlay-ui">
+            <Select
+              defaultValue={selectedOffice.name}
+              onChange={handleOfficeSelection}
+            >
+              {SPLYT_OFFICES.map(office => (
+                <option
+                  key={office.name}
+                  value={office.name}
+                >
+                  {office.label}
+                </option>
+              ))}
+            </Select>
+          </Card>
+        )}
       </div>
     </StyledFullWidthLayout>
   );
@@ -76,7 +116,17 @@ const StyledFullWidthLayout = styled(FullWidthLayout)`
   height: 100%;
 
   .taxi-map {
+    position: relative;
     width: 100%;
     height: 100%;
+
+    .overlay-ui {
+      position: absolute;
+      bottom: 4.2rem;
+      right: 4.2rem;
+      width: 100%;
+      max-width: 30rem;
+      border-radius: 0.8rem;
+    }
   }
 `;
