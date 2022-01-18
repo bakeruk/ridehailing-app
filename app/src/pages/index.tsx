@@ -2,18 +2,23 @@ import {
   useCallback, useEffect, useState
 } from "react";
 import styled from "styled-components";
+import {
+  Card, Box, Typography, SelectChangeEvent, MenuItem, Select
+} from "@mui/material";
+import { NextPage } from "next";
+import { DriversNearbyEtas } from "@api/splyt-taxis";
 
-import type { NextPage } from "next";
+import { toast } from "react-toastify";
 import { FullWidthLayout } from "src/components/common/layout";
-import { Typography } from "src/components/common/text";
 import { HomeTaxisMap } from "src/components/home/taxis-map";
 import { useGeolocation } from "src/hooks";
 import { findNearestSplytOffice } from "src/utils/helpers";
 import { SPLYT_OFFICES, SplytOfficeAttributes } from "src/constants";
-import type { MapProps } from "src/components/common/map";
-import { Select } from "src/components/common/form";
+import { MapProps } from "src/components/common/map";
+import { TaxisNearbyApi } from "src/api/TaxisNearbyApi";
+import { useQuery } from "react-query";
 
-import { Card } from "../components/common/card";
+const NearbyTaxisClient = new TaxisNearbyApi();
 
 /**
  * Hail a ride page
@@ -23,10 +28,16 @@ const HailARidePage: NextPage = () => {
   // eslint-disable-next-line no-unused-vars
   const [ nearestOffice, setNearestOffice ] = useState<SplytOfficeAttributes>();
   const [ selectedOffice, setSelectedOffice ] = useState<SplytOfficeAttributes>();
+  const [ nearbyTaxis, setNearbyTaxis ] = useState<DriversNearbyEtas>();
   const [ mapViewportConfig, setMapViewportConfig ] = useState<MapProps>();
 
-  const handleOfficeSelection = useCallback(event => {
-    const officeName = event.currentTarget.value;
+  const nearbyTaxisApiQuery = useQuery<DriversNearbyEtas, Error>("nearbyTaxis", async () => await NearbyTaxisClient.getNearbyTaxis(selectedOffice.coords), {
+    enabled: !!selectedOffice,
+    refetchInterval: 60 * 1000 // 1 minute
+  });
+
+  const handleOfficeSelection = useCallback((event: SelectChangeEvent<string>) => {
+    const officeName = event.target.value;
     const selectedOffice = SPLYT_OFFICES.find(office => office.name === officeName);
 
     // If an office was matched within SPLYT_OFFICES, update state
@@ -63,6 +74,19 @@ const HailARidePage: NextPage = () => {
     }
   }, [ userGeolocation ]);
 
+  useEffect(() => {
+    // On failure
+    if (nearbyTaxisApiQuery.error) {
+      toast.error(nearbyTaxisApiQuery.error.message);
+    }
+
+    // On success
+    if (nearbyTaxisApiQuery.data) {
+      console.log("data", nearbyTaxisApiQuery.data);
+      setNearbyTaxis(nearbyTaxisApiQuery.data);
+    }
+  }, [ nearbyTaxisApiQuery.error, nearbyTaxisApiQuery.data ]);
+
   return (
     <StyledFullWidthLayout
       metadata={{
@@ -71,36 +95,39 @@ const HailARidePage: NextPage = () => {
       }}
     >
       <Typography
-        as="h1"
+        variant="h1"
         className="off-screen"
       >
         Nearby Taxis
       </Typography>
 
-      <div className="taxi-map">
+      <Box className="taxi-map">
         <HomeTaxisMap
-          viewportConfig={mapViewportConfig}
           selectedOffice={selectedOffice}
+          nearbyTaxis={nearbyTaxis}
+          viewportConfig={mapViewportConfig}
         />
 
         {selectedOffice && (
           <Card className="overlay-ui">
             <Select
-              defaultValue={selectedOffice.name}
+              fullWidth
+              value={selectedOffice.name}
+              disabled={nearbyTaxisApiQuery.isLoading}
               onChange={handleOfficeSelection}
             >
               {SPLYT_OFFICES.map(office => (
-                <option
+                <MenuItem
                   key={office.name}
                   value={office.name}
                 >
                   {office.label}
-                </option>
+                </MenuItem>
               ))}
             </Select>
           </Card>
         )}
-      </div>
+      </Box>
     </StyledFullWidthLayout>
   );
 };
@@ -126,6 +153,7 @@ const StyledFullWidthLayout = styled(FullWidthLayout)`
       right: 4.2rem;
       width: 100%;
       max-width: 30rem;
+      padding: 1.4rem;
       border-radius: 0.8rem;
     }
   }

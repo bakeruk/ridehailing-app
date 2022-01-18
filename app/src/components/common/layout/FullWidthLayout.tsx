@@ -1,6 +1,5 @@
-import type React from "react";
+import React, { HTMLAttributes } from "react";
 import styled from "styled-components";
-import { HTMLAttributes } from "react";
 
 import { Head, HeadAttributes } from "src/components/common/head";
 

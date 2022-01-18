@@ -27,7 +27,7 @@ export class Drivers {
       params: {
         latitude,
         longitude,
-        count: count || 10
+        count: count || 3
       }
     });
   }

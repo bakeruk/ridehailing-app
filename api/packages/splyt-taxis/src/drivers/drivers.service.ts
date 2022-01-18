@@ -3,7 +3,7 @@ import { Injectable } from "@nestjs/common";
 import { SplytDrivers } from "@libs/splyt-api";
 
 import { FindAllDriversDto } from "./dto";
-import type { DriversNearbyEtas } from "./interfaces";
+import { DriversNearbyEtas } from "./interfaces";
 
 /**
  * Drivers service

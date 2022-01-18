@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { ServerStyleSheet } from "styled-components";
-
 import Document, {
   Html,
   Head,
@@ -50,7 +49,7 @@ export default class MyDocument extends Document {
 
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap"
+          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
         />
       </Head>
 

@@ -285,6 +285,18 @@ module.exports = {
             group: "external"
           },
           {
+            pattern: "next",
+            group: "external"
+          },
+          {
+            pattern: "next/**",
+            group: "external"
+          },
+          {
+            pattern: "@mui/**",
+            group: "external"
+          },
+          {
             pattern: "@libs/**",
             group: "internal"
           },

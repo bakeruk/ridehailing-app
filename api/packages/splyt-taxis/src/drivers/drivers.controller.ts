@@ -4,7 +4,7 @@ import {
 
 import { DriversService } from "./drivers.service";
 import { FindAllDriversDto } from "./dto";
-import type { DriversNearbyEtas } from "./interfaces";
+import { DriversNearbyEtas } from "./interfaces";
 
 /**
  * Drivers controller
@@ -27,6 +27,7 @@ export class DriversController {
    */
    @Get()
   async findAll(@Query() query: FindAllDriversDto): Promise<DriversNearbyEtas> {
+    // TODO: add trycatch that returns an error response rather than a hard error
     return await this.driversService.findAll(query);
   }
 }

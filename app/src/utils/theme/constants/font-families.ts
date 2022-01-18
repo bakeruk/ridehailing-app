@@ -1,3 +1,3 @@
 export enum FontFamily {
-  LATO = "'Lato', sans-serif"
+  ROBOTO = "'Roboto', sans-serif"
 }

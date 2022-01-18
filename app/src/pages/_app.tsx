@@ -1,8 +1,14 @@
-import { ThemeProvider } from "styled-components";
+import "react-toastify/dist/ReactToastify.css";
 
+import { ThemeProvider } from "styled-components";
+import { ThemeProvider as MuiThemeProvider } from "@mui/material";
+import { AppProps } from "next/app";
+
+import { ToastContainer } from "react-toastify";
 import { QueryClientProvider, QueryClient } from "react-query";
-import type { AppProps } from "next/app";
-import { GlobalStyles, theme } from "src/utils/theme";
+import {
+  GlobalStyles, theme, muiTheme
+} from "src/utils/theme";
 
 const queryClient = new QueryClient();
 
@@ -10,13 +16,17 @@ const queryClient = new QueryClient();
  * App initialiser
  */
 const App = ({ Component, pageProps }: AppProps): JSX.Element => (
-  <ThemeProvider theme={theme}>
-    <GlobalStyles />
+  <MuiThemeProvider theme={muiTheme}>
+    <ThemeProvider theme={theme}>
+      <ToastContainer />
 
-    <QueryClientProvider client={queryClient}>
-      <Component {...pageProps} />
-    </QueryClientProvider>
-  </ThemeProvider>
+      <GlobalStyles />
+
+      <QueryClientProvider client={queryClient}>
+        <Component {...pageProps} />
+      </QueryClientProvider>
+    </ThemeProvider>
+  </MuiThemeProvider>
 );
 
 export default App;

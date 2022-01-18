@@ -6,7 +6,15 @@
     "outDir": "dist",
     "module": "esnext",
     "target": "es5",
-    "isolatedModules": false
+    "isolatedModules": false,
+    "paths": {
+      "@api/api-gateway": [
+        "../api/packages/api-gateway/src"
+      ],
+      "@api/splyt-taxis": [
+        "../api/packages/splyt-taxis/src"
+      ]
+    }
   },
   "references": [
     {

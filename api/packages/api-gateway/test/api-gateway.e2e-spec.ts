@@ -1,6 +1,6 @@
 import request from "supertest";
 import { Test, TestingModule } from "@nestjs/testing";
-import type { INestApplication } from "@nestjs/common";
+import { INestApplication } from "@nestjs/common";
 
 import { ApiGatewayModule } from "../src/api-gateway.module";
 

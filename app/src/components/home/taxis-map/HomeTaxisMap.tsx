@@ -1,6 +1,7 @@
 import {
   useEffect, useRef, useState
 } from "react";
+import { DriversNearbyEtas } from "@api/splyt-taxis";
 
 import {
   InteractiveMapProps, MapRef, Marker
@@ -11,10 +12,11 @@ import {
   MapProps,
   BuildingMapMarker
 } from "src/components/common/map";
-import type { SplytOfficeAttributes } from "src/constants";
+import { SplytOfficeAttributes } from "src/constants";
 
 interface HomeTaxisMapProps {
   selectedOffice?: SplytOfficeAttributes;
+  nearbyTaxis?: DriversNearbyEtas;
   viewportConfig?: MapProps;
 }
 

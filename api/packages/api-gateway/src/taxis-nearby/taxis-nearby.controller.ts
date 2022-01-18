@@ -27,6 +27,7 @@ export class TaxisNearbyController {
    */
   @Get()
   async findAll(@Query() query: FindAllDriversDto): Promise<DriversNearbyEtas> {
+    // TODO: add trycatch that returns an error response rather than a hard error
     return this.taxisNearbyService.findAll(query);
   }
 }

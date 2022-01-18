@@ -22,7 +22,7 @@ export const GlobalStyles = createGlobalStyle`
     }
 
     body {
-      font-family: ${theme.fontFamily.LATO};
+      font-family: ${theme.fontFamily.ROBOTO};
       color: ${theme.colors.black};
       background-color: ${theme.colors.white};
       overflow: auto;

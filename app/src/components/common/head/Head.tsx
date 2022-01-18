@@ -1,5 +1,4 @@
-import type React from "react";
-
+import React from "react";
 import { default as NextHead } from "next/head";
 
 export interface HeadAttributes {
