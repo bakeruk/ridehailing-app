@@ -1,4 +1,4 @@
-import { DriversNearbyEtas, FindAllDriversDto } from "@api/splyt-taxis";
+import { DriversNearbyEtas, FindAllDriversDto } from "@api/packages/splyt-taxis";
 
 import { AxiosInstance } from "axios";
 

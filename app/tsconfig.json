@@ -8,10 +8,13 @@
     "target": "es5",
     "isolatedModules": false,
     "paths": {
-      "@api/api-gateway": [
+      "@api/libs/splyt-api": [
+        "../api/libs/splyt-api/src"
+      ],
+      "@api/packages/api-gateway": [
         "../api/packages/api-gateway/src"
       ],
-      "@api/splyt-taxis": [
+      "@api/packages/splyt-taxis": [
         "../api/packages/splyt-taxis/src"
       ]
     }

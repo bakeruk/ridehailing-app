@@ -6,7 +6,7 @@ import {
   Card, Box, Typography, SelectChangeEvent, MenuItem, Select
 } from "@mui/material";
 import { NextPage } from "next";
-import { DriversNearbyEtas } from "@api/splyt-taxis";
+import { DriversNearbyEtas } from "@api/packages/splyt-taxis";
 
 import { toast } from "react-toastify";
 import { FullWidthLayout } from "src/components/common/layout";
@@ -31,7 +31,7 @@ const HailARidePage: NextPage = () => {
   const [ nearbyTaxis, setNearbyTaxis ] = useState<DriversNearbyEtas>();
   const [ mapViewportConfig, setMapViewportConfig ] = useState<MapProps>();
 
-  const nearbyTaxisApiQuery = useQuery<DriversNearbyEtas, Error>("nearbyTaxis", async () => await NearbyTaxisClient.getNearbyTaxis(selectedOffice.coords), {
+  const nearbyTaxisApiQuery = useQuery<DriversNearbyEtas, Error>([ "nearbyTaxis", selectedOffice.name ], async () => await NearbyTaxisClient.getNearbyTaxis(selectedOffice.coords), {
     enabled: !!selectedOffice,
     refetchInterval: 60 * 1000 // 1 minute
   });

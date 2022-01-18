@@ -1,2 +1,2 @@
 export * as SplytDrivers from "./Drivers";
-export * from "./types/drivers";
+export * from "./types";
