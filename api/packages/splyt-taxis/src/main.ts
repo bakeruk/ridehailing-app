@@ -26,7 +26,8 @@ const bootstrap = async () => {
   splytTaxis.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
-      transform: true
+      transform: true,
+      transformOptions: { enableImplicitConversion: true }
     }),
   );
   splytTaxis.enableCors();

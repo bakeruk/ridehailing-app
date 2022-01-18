@@ -1,12 +1,13 @@
 import * as MapboxGL from "mapbox-gl";
 import {
+  useCallback,
   useEffect, useRef, useState
 } from "react";
 import { DriversNearbyEtas } from "@api/packages/splyt-taxis";
 import { DriverAttributes } from "@api/libs/splyt-api";
 
 import {
-  InteractiveMapProps, MapRef, Marker
+  InteractiveMapProps, MapEvent, MapRef, Marker
 } from "react-map-gl";
 import {
   defaultViewport,
@@ -20,6 +21,7 @@ import { SplytOfficeAttributes } from "src/constants";
 interface HomeTaxisMapProps {
   selectedOffice?: SplytOfficeAttributes;
   nearbyTaxis?: DriversNearbyEtas;
+  desiredEta?: number;
   viewportConfig?: MapProps;
 }
 
@@ -27,15 +29,92 @@ interface TaxisFeatureAttributes extends DriverAttributes {
   eta: number
 }
 
+interface TaxisGeoFeatureAttributes extends Omit<TaxisFeatureAttributes, "location"> {
+  location: string;
+}
+
+interface ClusterTaxisAtrributes {
+  cluster: boolean;
+  cluster_id: number;
+  point_count: number;
+  point_count_abbreviated: number;
+}
+
+interface GeoJSONFeature<P = ClusterTaxisAtrributes | TaxisGeoFeatureAttributes> extends GeoJSON.Feature<GeoJSON.Point, P> {
+  layer: MapboxGL.Layer;
+  source: string;
+  sourceLayer: string;
+  state: { [key: string]: unknown };
+}
+
+// type TaxiFeatures = Array<GeoJSONFeature<TaxisFeatureAttributes>>;
+
+enum ClusterClickZoomLevel {
+  MAX = 18,
+  DEFAULT = 17,
+  MIN = 15,
+}
+
 /**
  * Home taxis map component
  */
 export const HomeTaxisMap: React.FC<HomeTaxisMapProps> = ({
-  selectedOffice, nearbyTaxis, viewportConfig
+  selectedOffice, nearbyTaxis, desiredEta, viewportConfig
 }) => {
   const mapRef = useRef<MapRef>(null);
   const [ viewport, setViewport ] = useState<InteractiveMapProps>(defaultViewport);
   const [ clusterPoints, setClusterPoints ] = useState<GeoJSON.FeatureCollection<GeoJSON.Point, TaxisFeatureAttributes>>();
+
+  /**
+   * Handle on map click
+   *
+   * Zooms in on clusters and selects uncluttered points
+   *
+   * @param event - A map event object
+   */
+  const handleOnMapClick = useCallback(async (event: MapEvent) => {
+    const feature = event.features?.[ 0 ] as GeoJSONFeature | undefined;
+    const [ lng, lat ] = feature?.geometry.coordinates || event.lngLat;
+    let zoom = viewport.zoom || ClusterClickZoomLevel.DEFAULT;
+
+    // If the event is a feature
+    if (feature) {
+      // Event logic based on the layer ID
+      switch (feature.layer.id) {
+        // Cluster selection
+        case "cluster": {
+          // Set the new zoom according to the current zoom level
+          if (zoom < 14) {
+            zoom = ClusterClickZoomLevel.MIN;
+          } else if (zoom <= ClusterClickZoomLevel.MIN) {
+            zoom = ClusterClickZoomLevel.DEFAULT;
+          } else {
+            zoom = ClusterClickZoomLevel.MAX;
+          }
+
+          // centre viewport to search location
+          setViewport({
+            latitude: lat,
+            longitude: lng,
+            zoom
+          });
+        } break;
+
+        // Taxi selection
+        case "unclustered-point": {
+          const unclusteredFeature = feature as GeoJSONFeature<TaxisGeoFeatureAttributes>;
+          const location = JSON.parse(unclusteredFeature.properties.location) as TaxisFeatureAttributes["location"];
+
+          // centre viewport to search location
+          setViewport({
+            latitude: location.latitude,
+            longitude: location.longitude,
+            zoom: ClusterClickZoomLevel.MAX
+          });
+        } break;
+      }
+    }
+  }, [ viewport.zoom ]);
 
   // On Mount
   useEffect(() => {
@@ -80,11 +159,14 @@ export const HomeTaxisMap: React.FC<HomeTaxisMapProps> = ({
       for (const nearbyTaxisGrouped of nearbyTaxis) {
         const eta = nearbyTaxisGrouped.pickup_eta;
 
-        for (const drivers of nearbyTaxisGrouped.drivers) {
-          taxiFeatureData.push({
-            ...drivers,
-            eta
-          });
+        // Only show the taxis within the desired ETA
+        if (desiredEta && eta <= desiredEta) {
+          for (const drivers of nearbyTaxisGrouped.drivers) {
+            taxiFeatureData.push({
+              ...drivers,
+              eta
+            });
+          }
         }
       }
 
@@ -104,12 +186,14 @@ export const HomeTaxisMap: React.FC<HomeTaxisMapProps> = ({
         features: taxisFeatures
       });
     }
-  }, [ nearbyTaxis ]);
+  }, [ nearbyTaxis, desiredEta ]);
 
   return (
     <Map
       ref={mapRef}
       onViewportChange={setViewport}
+      onClick={handleOnMapClick}
+      interactiveLayerIds={clusterPoints ? [ "cluster", "unclustered-point" ] : []}
       {...viewport}
     >
       {selectedOffice && (

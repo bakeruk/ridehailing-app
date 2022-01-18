@@ -21,12 +21,6 @@ export class HttpRequest {
       baseURL: process.env.SPLYT_API_URL,
       timeout: this.HTTP_REQUEST_TIMEOUT
     });
-
-    console.log("axiosRequestConfig", {
-      ...axiosRequestConfig,
-      baseURL: process.env.SPLYT_API_URL,
-      timeout: this.HTTP_REQUEST_TIMEOUT
-    });
   }
 
   /**

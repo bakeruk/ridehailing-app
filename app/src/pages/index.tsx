@@ -3,7 +3,7 @@ import {
 } from "react";
 import styled from "styled-components";
 import {
-  Card, Box, Typography, SelectChangeEvent, MenuItem, Select
+  Card, Box, Typography, SelectChangeEvent, MenuItem, Select, Slider, Link
 } from "@mui/material";
 import { NextPage } from "next";
 import { DriversNearbyEtas } from "@api/packages/splyt-taxis";
@@ -19,6 +19,8 @@ import { TaxisNearbyApi } from "src/api/TaxisNearbyApi";
 import { useQuery } from "react-query";
 
 const NearbyTaxisClient = new TaxisNearbyApi();
+const NUMBER_OF_TAXIS_PER_ETA = 5;
+const MAX_ETA = 7;
 
 /**
  * Hail a ride page
@@ -29,13 +31,22 @@ const HailARidePage: NextPage = () => {
   const [ nearestOffice, setNearestOffice ] = useState<SplytOfficeAttributes>();
   const [ selectedOffice, setSelectedOffice ] = useState<SplytOfficeAttributes>();
   const [ nearbyTaxis, setNearbyTaxis ] = useState<DriversNearbyEtas>();
+  const [ desiredEta, setDesiredEta ] = useState(7);
   const [ mapViewportConfig, setMapViewportConfig ] = useState<MapProps>();
 
-  const nearbyTaxisApiQuery = useQuery<DriversNearbyEtas, Error>([ "nearbyTaxis", selectedOffice.name ], async () => await NearbyTaxisClient.getNearbyTaxis(selectedOffice.coords), {
+  const nearbyTaxisApiQuery = useQuery<DriversNearbyEtas, Error>([ "nearbyTaxis", selectedOffice?.name ], async () => await NearbyTaxisClient.getNearbyTaxis({
+    ...selectedOffice.coords,
+    numberOfVehicles: NUMBER_OF_TAXIS_PER_ETA,
+    maxEta: MAX_ETA
+  }), {
     enabled: !!selectedOffice,
+    staleTime: 60 * 1000, // 1 minute
     refetchInterval: 60 * 1000 // 1 minute
   });
 
+  /**
+   * Handle office selection
+   */
   const handleOfficeSelection = useCallback((event: SelectChangeEvent<string>) => {
     const officeName = event.target.value;
     const selectedOffice = SPLYT_OFFICES.find(office => office.name === officeName);
@@ -44,14 +55,27 @@ const HailARidePage: NextPage = () => {
     if (selectedOffice) {
       // Update the selectedOffice state
       setSelectedOffice(selectedOffice);
-
-      // Update the mapViewport config state
-      setMapViewportConfig({
-        ...selectedOffice.coords,
-        zoom: 15
-      });
     }
   }, []);
+
+  /**
+   * Handle ETA slide selection
+   */
+  const handleEtaSlideSelection = useCallback((_: Event, value: number | number[]) => {
+    const eta = !Array.isArray(value) ? value : value[ 0 ];
+
+    // Update the desiredEta state
+    // @ts-ignore - Funcitonality correct
+    setDesiredEta(eta);
+  }, []);
+
+  /**
+   * Handle office reset click
+   */
+  const handleOfficeReset = useCallback(() => {
+    // Update the selectedOffice state
+    setSelectedOffice(nearestOffice);
+  }, [ nearestOffice ]);
 
   // On usersGeolocation change
   useEffect(() => {
@@ -64,16 +88,21 @@ const HailARidePage: NextPage = () => {
       setNearestOffice(nearestSplytOffice);
       // Update the selectedOffice state
       setSelectedOffice(nearestSplytOffice);
-
-      // Update the mapViewport config state with the coordinates of the nearest
-      // office
-      setMapViewportConfig({
-        ...nearestSplytOffice.coords,
-        zoom: 15
-      });
     }
   }, [ userGeolocation ]);
 
+  // On selectedOffice change
+  useEffect(() => {
+    if (selectedOffice) {
+      // Update the mapViewport config state
+      setMapViewportConfig({
+        ...selectedOffice.coords,
+        zoom: 14
+      });
+    }
+  }, [ selectedOffice ]);
+
+  // On nearbyTaxisApiQuery response change
   useEffect(() => {
     // On failure
     if (nearbyTaxisApiQuery.error) {
@@ -82,7 +111,8 @@ const HailARidePage: NextPage = () => {
 
     // On success
     if (nearbyTaxisApiQuery.data) {
-      console.log("data", nearbyTaxisApiQuery.data);
+      console.log("nearbyTaxisApiQuery.data", nearbyTaxisApiQuery.data);
+      console.log("nearbyTaxisApiQuery.data", nearbyTaxisApiQuery.data[ 0 ].drivers[ 0 ].driver_id);
       setNearbyTaxis(nearbyTaxisApiQuery.data);
     }
   }, [ nearbyTaxisApiQuery.error, nearbyTaxisApiQuery.data ]);
@@ -105,26 +135,75 @@ const HailARidePage: NextPage = () => {
         <HomeTaxisMap
           selectedOffice={selectedOffice}
           nearbyTaxis={nearbyTaxis}
+          desiredEta={desiredEta}
           viewportConfig={mapViewportConfig}
         />
 
         {selectedOffice && (
           <Card className="overlay-ui">
-            <Select
-              fullWidth
-              value={selectedOffice.name}
-              disabled={nearbyTaxisApiQuery.isLoading}
-              onChange={handleOfficeSelection}
+            <Typography
+              variant="h4"
+              component="h2"
             >
-              {SPLYT_OFFICES.map(office => (
-                <MenuItem
-                  key={office.name}
-                  value={office.name}
+              Controls
+            </Typography>
+
+            <Box className="control-wrapper eta">
+              <Typography
+                className="control-label"
+                variant="body1"
+                component="h3"
+              >
+                Taxi ETA
+              </Typography>
+
+              <Slider
+                marks
+                size="small"
+                defaultValue={MAX_ETA}
+                value={desiredEta}
+                step={1}
+                min={1}
+                max={MAX_ETA}
+                valueLabelDisplay="auto"
+                onChange={handleEtaSlideSelection}
+              />
+            </Box>
+
+            <Box className="control-wrapper office">
+              <Typography
+                className="control-label"
+                variant="body1"
+                component="h3"
+              >
+                Cloest Splyt office
+              </Typography>
+
+              <Select
+                fullWidth
+                value={selectedOffice.name}
+                disabled={nearbyTaxisApiQuery.isLoading}
+                onChange={handleOfficeSelection}
+              >
+                {SPLYT_OFFICES.map(office => (
+                  <MenuItem
+                    key={office.name}
+                    value={office.name}
+                  >
+                    {office.label}
+                  </MenuItem>
+                ))}
+              </Select>
+
+              {nearestOffice.name !== selectedOffice.name && (
+                <Link
+                  variant="body2"
+                  onClick={handleOfficeReset}
                 >
-                  {office.label}
-                </MenuItem>
-              ))}
-            </Select>
+                  Reset
+                </Link>
+              )}
+            </Box>
           </Card>
         )}
       </Box>
@@ -155,6 +234,21 @@ const StyledFullWidthLayout = styled(FullWidthLayout)`
       max-width: 30rem;
       padding: 1.4rem;
       border-radius: 0.8rem;
+
+      .control-wrapper {
+        padding-top: 1.2rem;
+
+        .control-label {
+          padding-bottom: 0.4rem;
+        }
+
+        &.office a {
+          display: block;
+          padding-top: 0.4rem;
+          text-align: right;
+          cursor: pointer;
+        }
+      }
     }
   }
 `;
