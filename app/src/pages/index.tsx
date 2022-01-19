@@ -28,6 +28,7 @@ const NearbyTaxisClient = new TaxisNearbyApi();
 const HailARidePage: NextPage = () => {
   const { geolocation: userGeolocation } = useGeolocation();
   const [ showModal, setShowModal ] = useState(false);
+  const [ showModalTimeout, setShowModalTimeout ] = useState(false);
   const [ nearestOffice, setNearestOffice ] = useState<SplytOfficeAttributes>();
   const [ selectedOffice, setSelectedOffice ] = useState<SplytOfficeAttributes>();
   const [ nearbyTaxis, setNearbyTaxis ] = useState<DriversNearbyEtas>();
@@ -43,15 +44,6 @@ const HailARidePage: NextPage = () => {
     staleTime: 60 * 1000, // 1 minute
     refetchInterval: 60 * 1000 // 1 minute
   });
-
-  /**
-   * Determines whether or not we should show the user the welcome modal
-   */
-  const determineShowModal = useCallback(() => {
-    if (!userGeolocation) {
-      setShowModal(true);
-    }
-  }, [ userGeolocation ]);
 
   /**
    * Handle office selection
@@ -87,14 +79,32 @@ const HailARidePage: NextPage = () => {
 
   // On mount
   useEffect(() => {
+    let timeout: NodeJS.Timeout;
+
     // If the model is no set to show, set a 2 second timer. If there is no
     // geolocation data, show the welcome modal
     if (!showModal) {
-      setTimeout(() => determineShowModal, 2000);
+      timeout = setTimeout(() => setShowModalTimeout(true), 2000);
     }
+
+    // Clear the timeout on unmount
+    return () => {
+      clearTimeout(timeout);
+    };
   // On mount only
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // On showModalTimeout change
+  useEffect(() => {
+    // If the modal timeout is true and we still do not have a geolocation from
+    // the device, show the welcome modal
+    if (showModalTimeout && !userGeolocation) {
+      setShowModal(true);
+    }
+  // Only update on showModalTimeout change
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ showModalTimeout ]);
 
   // On usersGeolocation change
   useEffect(() => {
@@ -158,6 +168,7 @@ const HailARidePage: NextPage = () => {
 
         {showModal && (
           <Modal
+            className="welcome-modal"
             title="Hail a Ride"
             onClose={() => setShowModal(false)}
           >

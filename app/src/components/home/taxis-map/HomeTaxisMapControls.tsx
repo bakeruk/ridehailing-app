@@ -76,6 +76,7 @@ export const HomeTaxisMapControls: React.FC<HomeTaxisMapControlsProps> = ({
 
         <Select
           fullWidth
+          className="office-select"
           value={selectedOffice?.name}
           disabled={isLoading}
           onChange={onOfficeSelect}
@@ -83,6 +84,7 @@ export const HomeTaxisMapControls: React.FC<HomeTaxisMapControlsProps> = ({
           {SPLYT_OFFICES.map(office => (
             <MenuItem
               key={office.name}
+              className={`select-option-${office.name}`}
               value={office.name}
             >
               {office.label}
@@ -93,9 +95,10 @@ export const HomeTaxisMapControls: React.FC<HomeTaxisMapControlsProps> = ({
         {nearestOffice?.name !== selectedOffice?.name && (
           <Link
             variant="body2"
+            className="nearest-office-recenter"
             onClick={onOfficeReset}
           >
-            Reset
+            {`Recenter to ${nearestOffice.label} office`}
           </Link>
         )}
       </div>

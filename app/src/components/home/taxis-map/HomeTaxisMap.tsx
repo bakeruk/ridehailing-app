@@ -209,6 +209,7 @@ export const HomeTaxisMap: React.FC<HomeTaxisMapProps> = ({
       {selectedOffice && (
         <Marker
           key={selectedOffice.name}
+          className={`selected-office-marker ${selectedOffice.name}-office`}
           {...selectedOffice.coords}
         >
           <BuildingMapMarker />

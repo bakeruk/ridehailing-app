@@ -1,9 +1,10 @@
+import { HTMLAttributes } from "react";
 import { Button, Typography } from "@mui/material";
 import styled from "styled-components";
 
 import { Card } from "../card";
 
-interface ModalProps {
+interface ModalProps extends HTMLAttributes<HTMLDivElement> {
   title?: string;
   onClose?: () => void;
 }
@@ -12,9 +13,9 @@ interface ModalProps {
  * Modal component
  */
 export const Modal: React.FC<ModalProps> = ({
-  title, onClose, children
+  title, onClose, children, ...rest
 }) => (
-  <StyledModal>
+  <StyledModal {...rest}>
     <Card className="card">
       {title && (
         <Typography
