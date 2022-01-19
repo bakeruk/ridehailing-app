@@ -7,9 +7,44 @@
 
 ## Table of Contents
 - [Table of Contents](#table-of-contents)
+- [Running the project](#running-the-project)
+  - [Yarn](#yarn)
+    - [API (NestJS)](#api-nestjs)
+    - [App (NextJS)](#app-nextjs)
 - [Project structure](#project-structure)
 
+## Running the project
+
+### Yarn
+
+To run the project, we need to make sure that all of the dependencies are installed using `Yarn`.
+
+```shell
+yarn install
+```
+
+**Note**: For this next step, it is recommended that you use multiple **Terminal** tabs.
+
+#### API (NestJS)
+
+You will need to start the **API Gateway** and **Splyt Taxis microservice** NestJS instances within the `ridehailing-app/api` directory.
+
+```sh
+cd ridehailing-app/api/
+yarn start api-gateway
+
+# New tab
+yarn start splyt-taxis
+```
+
+#### App (NextJS)
+
+TODO
+
+
 ## Project structure
+
+Below gives you an overview of the project structure.
 
 ```
 |--api                # NestJS (NodeJs API)
@@ -28,7 +63,8 @@
       |--hooks        # Shared hooks
       |--pages
       |--types        # Global declaration types
-      `--utils        # utilities
-         `--theme
+      `--utils
+         |--helpers   # Utility helpers
+         `--theme     # Theme definitions
 
 ```

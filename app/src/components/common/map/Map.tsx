@@ -32,6 +32,11 @@ export const Map = forwardRef<MapRef, MapProps>(({
     transitionDuration={1000}
     transitionInterpolator={new FlyToInterpolator()}
     {...rest}
+    /* Resizing working around */
+    {...{
+      width: "100%",
+      height: "100%"
+    }}
   >
     {children}
   </ReactMapGL>

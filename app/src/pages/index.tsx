@@ -1,33 +1,33 @@
 import {
   useCallback, useEffect, useState
 } from "react";
-import styled from "styled-components";
-import {
-  Card, Box, Typography, SelectChangeEvent, MenuItem, Select, Slider, Link
-} from "@mui/material";
+import styled, { css } from "styled-components";
+import { Typography, SelectChangeEvent } from "@mui/material";
 import { NextPage } from "next";
 import { DriversNearbyEtas } from "@api/packages/splyt-taxis";
 
 import { toast } from "react-toastify";
 import { FullWidthLayout } from "src/components/common/layout";
-import { HomeTaxisMap } from "src/components/home/taxis-map";
+import { HomeTaxisMap, HomeTaxisMapControls } from "src/components/home/taxis-map";
 import { useGeolocation } from "src/hooks";
 import { findNearestSplytOffice } from "src/utils/helpers";
-import { SPLYT_OFFICES, SplytOfficeAttributes } from "src/constants";
+import {
+  SPLYT_OFFICES, SplytOfficeAttributes, NUMBER_OF_TAXIS_PER_ETA, MAX_ETA
+} from "src/constants";
 import { MapProps } from "src/components/common/map";
 import { TaxisNearbyApi } from "src/api/TaxisNearbyApi";
 import { useQuery } from "react-query";
+import { LoadingBox } from "src/components/common/loading-ui";
+import { Modal } from "src/components/common/modal";
 
 const NearbyTaxisClient = new TaxisNearbyApi();
-const NUMBER_OF_TAXIS_PER_ETA = 5;
-const MAX_ETA = 7;
 
 /**
  * Hail a ride page
  */
 const HailARidePage: NextPage = () => {
   const { geolocation: userGeolocation } = useGeolocation();
-  // eslint-disable-next-line no-unused-vars
+  const [ showModal, setShowModal ] = useState(false);
   const [ nearestOffice, setNearestOffice ] = useState<SplytOfficeAttributes>();
   const [ selectedOffice, setSelectedOffice ] = useState<SplytOfficeAttributes>();
   const [ nearbyTaxis, setNearbyTaxis ] = useState<DriversNearbyEtas>();
@@ -43,6 +43,15 @@ const HailARidePage: NextPage = () => {
     staleTime: 60 * 1000, // 1 minute
     refetchInterval: 60 * 1000 // 1 minute
   });
+
+  /**
+   * Determines whether or not we should show the user the welcome modal
+   */
+  const determineShowModal = useCallback(() => {
+    if (!userGeolocation) {
+      setShowModal(true);
+    }
+  }, [ userGeolocation ]);
 
   /**
    * Handle office selection
@@ -65,7 +74,6 @@ const HailARidePage: NextPage = () => {
     const eta = !Array.isArray(value) ? value : value[ 0 ];
 
     // Update the desiredEta state
-    // @ts-ignore - Funcitonality correct
     setDesiredEta(eta);
   }, []);
 
@@ -76,6 +84,17 @@ const HailARidePage: NextPage = () => {
     // Update the selectedOffice state
     setSelectedOffice(nearestOffice);
   }, [ nearestOffice ]);
+
+  // On mount
+  useEffect(() => {
+    // If the model is no set to show, set a 2 second timer. If there is no
+    // geolocation data, show the welcome modal
+    if (!showModal) {
+      setTimeout(() => determineShowModal, 2000);
+    }
+  // On mount only
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // On usersGeolocation change
   useEffect(() => {
@@ -111,8 +130,6 @@ const HailARidePage: NextPage = () => {
 
     // On success
     if (nearbyTaxisApiQuery.data) {
-      console.log("nearbyTaxisApiQuery.data", nearbyTaxisApiQuery.data);
-      console.log("nearbyTaxisApiQuery.data", nearbyTaxisApiQuery.data[ 0 ].drivers[ 0 ].driver_id);
       setNearbyTaxis(nearbyTaxisApiQuery.data);
     }
   }, [ nearbyTaxisApiQuery.error, nearbyTaxisApiQuery.data ]);
@@ -131,7 +148,7 @@ const HailARidePage: NextPage = () => {
         Nearby Taxis
       </Typography>
 
-      <Box className="taxi-map">
+      <div className="taxi-map">
         <HomeTaxisMap
           selectedOffice={selectedOffice}
           nearbyTaxis={nearbyTaxis}
@@ -139,74 +156,45 @@ const HailARidePage: NextPage = () => {
           viewportConfig={mapViewportConfig}
         />
 
-        {selectedOffice && (
-          <Card className="overlay-ui">
+        {showModal && (
+          <Modal
+            title="Hail a Ride"
+            onClose={() => setShowModal(false)}
+          >
             <Typography
-              variant="h4"
-              component="h2"
+              variant="subtitle1"
+              component="p"
             >
-              Controls
+              Welcome to Hail a Ride. The one and only place to view local taxis around our opinionated areas. Choose your ETA requirements and location to find your nearest Taxi.
             </Typography>
 
-            <Box className="control-wrapper eta">
-              <Typography
-                className="control-label"
-                variant="body1"
-                component="h3"
-              >
-                Taxi ETA
-              </Typography>
-
-              <Slider
-                marks
-                size="small"
-                defaultValue={MAX_ETA}
-                value={desiredEta}
-                step={1}
-                min={1}
-                max={MAX_ETA}
-                valueLabelDisplay="auto"
-                onChange={handleEtaSlideSelection}
-              />
-            </Box>
-
-            <Box className="control-wrapper office">
-              <Typography
-                className="control-label"
-                variant="body1"
-                component="h3"
-              >
-                Cloest Splyt office
-              </Typography>
-
-              <Select
-                fullWidth
-                value={selectedOffice.name}
-                disabled={nearbyTaxisApiQuery.isLoading}
-                onChange={handleOfficeSelection}
-              >
-                {SPLYT_OFFICES.map(office => (
-                  <MenuItem
-                    key={office.name}
-                    value={office.name}
-                  >
-                    {office.label}
-                  </MenuItem>
-                ))}
-              </Select>
-
-              {nearestOffice.name !== selectedOffice.name && (
-                <Link
-                  variant="body2"
-                  onClick={handleOfficeReset}
-                >
-                  Reset
-                </Link>
-              )}
-            </Box>
-          </Card>
+            <Typography
+              variant="body1"
+              sx={{ paddingTop: "1.4rem" }}
+            >
+              Before we begin, we kindly ask that you share your devices location so that we can place you to an area closest to you.
+            </Typography>
+          </Modal>
         )}
-      </Box>
+
+        {nearbyTaxisApiQuery.isFetching && (
+          <LoadingBox className="loading-ui" />
+        )}
+
+        {selectedOffice && (
+          <HomeTaxisMapControls
+            className="controls-ui"
+            isLoading={nearbyTaxisApiQuery.isFetching}
+            selectedEta={desiredEta}
+            nearestOffice={nearestOffice}
+            selectedOffice={selectedOffice}
+            onEtaSelection={handleEtaSlideSelection}
+            onOfficeSelect={handleOfficeSelection}
+            onOfficeReset={handleOfficeReset}
+          />
+        )}
+
+      </div>
     </StyledFullWidthLayout>
   );
 };
@@ -214,41 +202,41 @@ const HailARidePage: NextPage = () => {
 export default HailARidePage;
 
 const StyledFullWidthLayout = styled(FullWidthLayout)`
-  display: flex;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-
-  .taxi-map {
-    position: relative;
+  ${({ theme }) => css`
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
 
-    .overlay-ui {
-      position: absolute;
-      bottom: 4.2rem;
-      right: 4.2rem;
+    .taxi-map {
+      position: relative;
       width: 100%;
-      max-width: 30rem;
-      padding: 1.4rem;
-      border-radius: 0.8rem;
+      height: 100%;
 
-      .control-wrapper {
-        padding-top: 1.2rem;
+      .loading-ui {
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
 
-        .control-label {
-          padding-bottom: 0.4rem;
-        }
+      .controls-ui {
+        position: fixed;
+        z-index: 2;
+        bottom: 0rem;
+        right: 0rem;
+        width: 100%;
+        border-radius: 0.8rem;
+        pointer-events: auto;
 
-        &.office a {
-          display: block;
-          padding-top: 0.4rem;
-          text-align: right;
-          cursor: pointer;
+        @media (min-width: ${theme.breakpoints.MOBILE_SL}) {
+          max-width: 34rem;
         }
       }
     }
-  }
+  `};
 `;

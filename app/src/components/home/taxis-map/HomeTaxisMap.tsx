@@ -7,7 +7,7 @@ import { DriversNearbyEtas } from "@api/packages/splyt-taxis";
 import { DriverAttributes } from "@api/libs/splyt-api";
 
 import {
-  InteractiveMapProps, MapEvent, MapRef, Marker
+  InteractiveMapProps, MapEvent, MapRef, Marker, Popup
 } from "react-map-gl";
 import {
   defaultViewport,
@@ -64,6 +64,7 @@ export const HomeTaxisMap: React.FC<HomeTaxisMapProps> = ({
   const mapRef = useRef<MapRef>(null);
   const [ viewport, setViewport ] = useState<InteractiveMapProps>(defaultViewport);
   const [ clusterPoints, setClusterPoints ] = useState<GeoJSON.FeatureCollection<GeoJSON.Point, TaxisFeatureAttributes>>();
+  const [ selectedTaxi, setSelectedTaxi ] = useState<TaxisFeatureAttributes | null>(null);
 
   /**
    * Handle on map click
@@ -105,6 +106,12 @@ export const HomeTaxisMap: React.FC<HomeTaxisMapProps> = ({
           const unclusteredFeature = feature as GeoJSONFeature<TaxisGeoFeatureAttributes>;
           const location = JSON.parse(unclusteredFeature.properties.location) as TaxisFeatureAttributes["location"];
 
+          // Update the selectedTaxi state
+          setSelectedTaxi({
+            ...unclusteredFeature.properties,
+            location
+          });
+
           // centre viewport to search location
           setViewport({
             latitude: location.latitude,
@@ -134,7 +141,7 @@ export const HomeTaxisMap: React.FC<HomeTaxisMapProps> = ({
         }
 
         // Add the image to the map
-        map.addImage("taxi-icon", img);
+        map.addImage("taxi-icon", img, { sdf: true });
       });
     }
   }, []);
@@ -154,6 +161,9 @@ export const HomeTaxisMap: React.FC<HomeTaxisMapProps> = ({
   useEffect(() => {
     if (nearbyTaxis) {
       const taxiFeatureData: TaxisFeatureAttributes[] = [];
+
+      // Reset the selectedTaxi state
+      setSelectedTaxi(null);
 
       // Get the each taxis into the object structure (TaxisFeatureAttributes) that we want
       for (const nearbyTaxisGrouped of nearbyTaxis) {
@@ -206,13 +216,29 @@ export const HomeTaxisMap: React.FC<HomeTaxisMapProps> = ({
       )}
 
       {clusterPoints && (
-        <MapClusterLayer
-          id="nearby-taxis"
-          type="geojson"
-          clusterRadius={26}
-          clusterMaxZoom={24}
-          data={clusterPoints}
-        />
+        <>
+          {/* For performant Taxi markers via the Mapbox GL API */}
+
+          <MapClusterLayer
+            id="nearby-taxis"
+            type="geojson"
+            clusterRadius={26}
+            clusterMaxZoom={24}
+            data={clusterPoints}
+          />
+
+          {selectedTaxi && (
+            <Popup
+              tipSize={10}
+              latitude={selectedTaxi.location.latitude}
+              longitude={selectedTaxi.location.longitude}
+              offsetTop={-14}
+              onClose={setSelectedTaxi}
+            >
+              {`ETA ${selectedTaxi.eta} mins`}
+            </Popup>
+          )}
+        </>
       )}
     </Map>
   );

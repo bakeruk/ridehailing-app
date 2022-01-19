@@ -9,6 +9,10 @@
     "email": "luke.baker@live.com"
   },
   "license": "MIT",
+  "engines": {
+    "node": ">=16.13.2",
+    "npm": ">=6.14.15"
+  },
   "scripts": {
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx,json",
     "lint:fix": "yarn lint --fix",
