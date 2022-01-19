@@ -137,11 +137,14 @@ Below gives you an overview of the project structure.
 
 ## Next steps
 
-Improve the security of the backend API based on its run-time environment. For example:
+  - CI/CD
+  - Improve the security of the backend API based on its run-time environment. For example:
 
-  - CORS.
-  - HTTP response security.
-    - Headers.
-    - SSL.
-  - Rate limiting.
-  - etc.
+    - CORS.
+    - HTTP response security.
+      - Headers.
+      - SSL.
+    - Rate limiting.
+    - etc.
+
+  - Add Swagger openapi decorators to automatically generate API documentation.
