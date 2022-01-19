@@ -15,6 +15,7 @@
     - [App (NextJS)](#app-nextjs)
       - [Testing](#testing-1)
 - [Project structure](#project-structure)
+- [Next steps](#next-steps)
 
 ## introduction
 
@@ -133,3 +134,14 @@ Below gives you an overview of the project structure.
          `--theme     # Theme definitions
 
 ```
+
+## Next steps
+
+Improve the security of the backend API based on its run-time environment. For example:
+
+  - CORS.
+  - HTTP response security.
+    - Headers.
+    - SSL.
+  - Rate limiting.
+  - etc.

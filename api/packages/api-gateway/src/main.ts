@@ -2,6 +2,8 @@ import compression from "compression";
 import { NestFactory } from "@nestjs/core";
 import { Logger } from "@nestjs/common";
 
+import helmet from "helmet";
+
 import { ApiGatewayModule } from "./api-gateway.module";
 
 /**
@@ -22,8 +24,11 @@ const bootstrap = async () => {
 
   const logger = new Logger("server");
 
-  apiGateway.enableCors();
+  // Performance
   apiGateway.use(compression());
+  // Security
+  apiGateway.enableCors();
+  apiGateway.use(helmet());
   await apiGateway.listen(port);
   logger.log(`API Gateway listening on port: ${port}`);
 };

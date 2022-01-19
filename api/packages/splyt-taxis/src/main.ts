@@ -2,6 +2,8 @@ import compression from "compression";
 import { NestFactory } from "@nestjs/core";
 import { Logger, ValidationPipe } from "@nestjs/common";
 
+import helmet from "helmet";
+
 import { SplytTaxisModule } from "./splyt-taxis.module";
 
 /**
@@ -30,8 +32,11 @@ const bootstrap = async () => {
       transformOptions: { enableImplicitConversion: true }
     }),
   );
-  splytTaxis.enableCors();
+  // Performance
   splytTaxis.use(compression());
+  // Security
+  splytTaxis.enableCors();
+  splytTaxis.use(helmet());
   await splytTaxis.listen(port);
   logger.log(`Splyt taxis microservice listening on port: ${port}`);
 };

@@ -1596,6 +1596,7 @@ __metadata:
     class-transformer: ^0.5.1
     class-validator: ^0.13.2
     compression: ^1.7.4
+    helmet: ^5.0.1
     jest: ^27.2.5
     reflect-metadata: ^0.1.13
     rimraf: ^3.0.2
@@ -5374,6 +5375,13 @@ __metadata:
   version: 1.1.1
   resolution: "haversine@npm:1.1.1"
   checksum: 0d635e4da5bdd21c74ca92bb1bd44d6f8c6ca2166447fdbc33bb51469172c2326b103588a942767820602e3ba72d0a780b7180b042fac36381186bbc54316fcb
+  languageName: node
+  linkType: hard
+
+"helmet@npm:^5.0.1":
+  version: 5.0.1
+  resolution: "helmet@npm:5.0.1"
+  checksum: 6e693ce32a413e967a3f7dc4f12ebcb494b8819b7d9397b2b3c72ac82f75a2ce415b5c6159f7d9717dc646bbf2f3447f63770fc8398efb555b12da1ac8ef53e7
   languageName: node
   linkType: hard
 
