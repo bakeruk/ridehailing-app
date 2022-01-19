@@ -6,7 +6,7 @@
     "outDir": "dist",
     "module": "esnext",
     "target": "es5",
-    "isolatedModules": true,
+    "isolatedModules": false,
     "paths": {
       "@api/libs/splyt-api": [
         "../api/libs/splyt-api/src"
