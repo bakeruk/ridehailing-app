@@ -138,6 +138,8 @@ Below gives you an overview of the project structure.
 ## Next steps
 
   - CI/CD
+  - Yarn workspace commands to run tests (`yarn workspaces foreach run test`) and to improve development UX
+  - In depth End-to-end (e2e) tests
   - Improve the security of the backend API based on its run-time environment. For example:
 
     - CORS.
