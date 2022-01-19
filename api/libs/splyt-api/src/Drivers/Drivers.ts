@@ -19,7 +19,7 @@ export class Drivers {
    * @param latitude - Geolocation latitude
    * @param longitude - Geolocation longitude
    * @param count - The number of nearest cars to return
-   * @returns DriversNearbyResult
+   * @returns An object of nearby taxis
    */
   async nearby(latitude: number, longitude: number, count?: number): Promise<DriversNearbyResult> {
     return await this.HttpRequestInstance.request<DriversNearbyResult>({

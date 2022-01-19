@@ -20,8 +20,10 @@ export class SplytTaxisController {
 
   /**
    * Gets the health status
+   *
+   * @returns A simple OK message
    */
-   @Get()
+  @Get()
   getHealthStatus(): string {
     return this.splytTaxisService.getHealthStatus();
   }

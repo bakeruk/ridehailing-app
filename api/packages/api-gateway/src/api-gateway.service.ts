@@ -6,7 +6,9 @@ import { Injectable } from "@nestjs/common";
 @Injectable()
 export class ApiGatewayService {
   /**
-   * Gets health status
+   * Gets the health status
+   *
+   * @returns A simple OK message
    */
   getHealthStatus(): string {
     return "OK";

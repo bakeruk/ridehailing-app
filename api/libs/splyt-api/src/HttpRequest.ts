@@ -13,6 +13,8 @@ export class HttpRequest {
 
   /**
    * Instantiates a new HTTP request instance
+   *
+   * @param axiosRequestConfig - An optional Axios request config object
    */
   constructor(axiosRequestConfig?: AxiosRequestConfig) {
     // Creates a new Axios instance with pre-defined configuration
@@ -25,6 +27,9 @@ export class HttpRequest {
 
   /**
    * Performs an Axios request with the given axiosRequestConfig
+   *
+   * @param axiosRequestConfig - AN Axios request config object
+   * @returns The requested data
    */
   async request<T, D = any>(axiosRequestConfig: AxiosRequestConfig<D>): Promise<T> {
     let result: AxiosResponse<T, D>;

@@ -23,7 +23,10 @@ export class DriversController {
   }
 
   /**
-   * Gets the health status
+   * Finds all the nearby drivers around the given coordinates
+   *
+   * @param query - Query paramters containing the coordinates and filter attributes for location nearby taxis
+   * @returns An array of nearby taxis grouped by their ETA
    */
    @Get()
   async findAll(@Query() query: FindAllDriversDto): Promise<DriversNearbyEtas> {

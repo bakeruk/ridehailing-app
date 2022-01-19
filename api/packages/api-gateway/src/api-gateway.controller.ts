@@ -20,6 +20,8 @@ export class ApiGatewayController {
 
   /**
    * Gets the health status
+   *
+   * @returns A simple OK message
    */
   @Get()
   getHealthStatus(): string {

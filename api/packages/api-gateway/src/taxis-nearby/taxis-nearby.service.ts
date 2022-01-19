@@ -23,10 +23,13 @@ export class TaxisNearbyService {
   }
 
   /**
-   * Find all nearby drivers
+   * Finds all the nearby drivers around the given coordinates
    *
    * Hits the Splyt drivers endpoint until a list of the driver locations grouped
    * by their ETA is compiled.
+   *
+   * @param params - The parameters to perform a Splyt GET /api/drivers request
+   * @returns An array of nearby taxis grouped by their ETA
    */
   async findAll(params: FindAllDriversDto): Promise<DriversNearbyEtas> {
     return new Promise((resolve, reject) => {
