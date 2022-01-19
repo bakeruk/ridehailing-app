@@ -10,7 +10,8 @@
   "license": "MIT",
   "engines": {
     "node": ">=16.13.2",
-    "npm": ">=6.14.15"
+    "npm": ">=6.14.15",
+    "yarn": ">=3.1.1"
   },
   "scripts": {
     "dev": "next dev",
@@ -18,7 +19,9 @@
     "start": "next start",
     "cy:run": "yarn cypress run",
     "cy:open": "yarn cypress open",
-    "test": "yarn jest"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage"
   },
   "dependencies": {
     "@emotion/react": "^11.7.1",
