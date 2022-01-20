@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile-app
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.docker
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile-api-gateway
+    ports:
+      - "4000:4000"
+    env_file:
+      - .env.docker
+
+  api-splyt-taxis:
+    build:
+      context: .
+      dockerfile: Dockerfile-api-splyt-taxis
+    ports:
+      - "4010:4010"
+    env_file:
+      - .env.docker

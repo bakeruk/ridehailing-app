@@ -40,3 +40,4 @@ yarn-error.log*
 # local env files
 .env*
 !.env.EXAMPLE
+!.env.docker.EXAMPLE

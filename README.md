@@ -22,7 +22,7 @@
 This project was built with **Typescript** implementations of **NestJS** and **NextJS**, using:
 
   - **NodeJS v16.13.2 (LTS)**
-  - **Yarn v3.1.1 (Berry)** - Yarn PNP was preferred, but unfortunately, a show stopping bug with **NestJS** prevented this.
+  - **Yarn v1.22.15**
   - **NPM v6.14.15**
 
 It was developed as a monorepo for the ease of sharing code and for its Typescript visibility across the individual projects.

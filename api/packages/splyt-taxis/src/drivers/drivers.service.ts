@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common";
-
-import { SplytDrivers } from "@libs/splyt-api";
+import { SplytDrivers } from "@api/libs/splyt-api";
 
 import { FindAllDriversDto } from "./dto";
 import { DriversNearbyEtas } from "./interfaces";

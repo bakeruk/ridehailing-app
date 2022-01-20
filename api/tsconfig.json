@@ -13,7 +13,7 @@
       "@libs/axios-async": [
         "libs/axios-async/src"
       ],
-      "@libs/splyt-api": [
+      "@api/libs/splyt-api": [
         "libs/splyt-api/src"
       ]
     }

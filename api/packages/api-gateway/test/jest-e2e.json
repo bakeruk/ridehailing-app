@@ -7,7 +7,7 @@
     "^.+\\.(t|j)s$": "ts-jest"
   },
   "moduleNameMapper": {
-    "^@libs/splyt-api(|/.*)$": "<rootDir>/../../../libs/splyt-api/src/$1",
+    "^@api/libs/splyt-api(|/.*)$": "<rootDir>/../../../libs/splyt-api/src/$1",
     "^@packages/splyt-taxis(|/.*)$": "<rootDir>/../../../packages/splyt-taxis/src/$1"
   }
 }
