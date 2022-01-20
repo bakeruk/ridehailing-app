@@ -7,7 +7,7 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - .env.docker
+      - docker.env
 
   api-gateway:
     build:
@@ -16,7 +16,7 @@ services:
     ports:
       - "4000:4000"
     env_file:
-      - .env.docker
+      - docker.env
 
   api-splyt-taxis:
     build:
@@ -25,4 +25,4 @@ services:
     ports:
       - "4010:4010"
     env_file:
-      - .env.docker
+      - docker.env

@@ -14,6 +14,7 @@
       - [Testing](#testing)
     - [App (NextJS)](#app-nextjs)
       - [Testing](#testing-1)
+  - [Run using Docker](#run-using-docker)
 - [Project structure](#project-structure)
 - [Next steps](#next-steps)
 
@@ -107,6 +108,38 @@ yarn cy:run
 # Or you can manually trigger the tests using the Cypress test GUI
 yarn cy:open
 ```
+
+### Run using Docker
+
+Before we begin, let's setup the environment variables required by the codebase. You will need to duplicate the `ridehailing-app/docker.env.EXAMPLE` file and name the new version to `docker.env` (the file will be moved and renamed to `.env.production` within Docker - NextJS build-time work around).
+
+
+```sh
+# Environment specific
+ENVIRONMENT="production"
+
+# NextJS
+NEXT_PUBLIC_API_BASE_URL="http://api-gateway:4000"
+NEXT_PUBLIC_MAPBOX_TOKEN="CHANGEME"
+
+# Microservices
+API_GATEWAY_PORT=4000
+SPLYT_TAXIS_MICROSERVICE_PORT=4010
+SPLYT_TAXIS_MICROSERVICE_URL="http://api-splyt-taxis:4010"
+
+# Splyt API - Include /api path (https://example.com/api)
+SPLYT_API_URL="CHANGEME"
+```
+
+You will need to supply a [**Mapbox**](https://www.mapbox.com/) API token for the `NEXT_PUBLIC_MAPBOX_TOKEN` variable and the `SPLYT_API_URL`.
+
+Now we can build our images and run them in containers using,
+
+```sh
+docker-compose up
+```
+
+**Note**: Ensure your Docker client is running.
 
 ## Project structure
 

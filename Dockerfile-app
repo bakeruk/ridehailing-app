@@ -1,4 +1,4 @@
-FROM node:16.13.2
+FROM node:16.13.2-buster
 
 ARG TZ=Europe/London
 
@@ -15,9 +15,12 @@ COPY ./.husky .
 COPY ./tsconfig.json .
 COPY ./tsconfig.settings.json .
 COPY ./app ./app
+COPY ./docker.env ./app
 COPY ./api ./api
 
 RUN yarn install
+# Loading external environment variables work around (NextJS) need them at build-time
+RUN mv /src/app/docker.env /src/app/.env.production
 RUN cd ./app && NODE_ENV=production yarn build
 
 CMD cd ./app && NODE_ENV=production yarn start

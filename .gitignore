@@ -41,3 +41,5 @@ yarn-error.log*
 .env*
 !.env.EXAMPLE
 !.env.docker.EXAMPLE
+docker.env
+!docker.env.EXAMPLE
